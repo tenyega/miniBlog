@@ -7,14 +7,13 @@ use Stripe\Stripe;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Checkout\Session;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-
+use Symfony\Component\HttpFoundation\Request;
 
 class PaymentService
 {
     private $domain;
     private $apiKey;
     private $em;
-
     public function __construct(protected ParameterBagInterface $parameter, private EntityManagerInterface $entityManagerInterface)
     {
         $this->parameter = $parameter;
@@ -23,7 +22,7 @@ class PaymentService
         $this->em = $entityManagerInterface;
     }
 
-    public function askCheckout(): ?Session
+    public function askCheckout(string $id): ?Session
     {
         Stripe::setApiKey($this->apiKey); // Établissement de la connexion (requête API)        
         $checkoutSession = Session::create([
@@ -39,7 +38,7 @@ class PaymentService
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => $this->domain . '/payment-success',
+            'success_url' => $this->domain . '/payment-success/'.$id,
             'cancel_url' => $this->domain . '/payment-cancel',
             'automatic_tax' => [
                 'enabled' => true,

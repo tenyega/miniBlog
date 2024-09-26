@@ -13,17 +13,17 @@ class EmailNotificationService
     {
         $this->mailer = $mailer;
     }
-    public function sendEmail(string $receiver, array $case): ?string
+    public function sendEmail(string $receiver): ?string
     {
         try {
-           
+
             $email = (new TemplatedEmail())
                 ->from('mdolma@ymail.com')
                 ->to($receiver)
-                ->subject($case['subject'])
+                ->subject('Thank you for your subscription')
                 ->priority(Email::PRIORITY_HIGH)
-                ->htmlTemplate('email/' . $case['template'] . '.html.twig' ?? 'email/base_email.html.twig');
-           
+                ->htmlTemplate('article/subscriptionNotification.html.twig');
+
 
             $this->mailer->send($email);
 

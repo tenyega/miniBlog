@@ -28,5 +28,46 @@
 		{% block body %}{% endblock %}
 		{% include('components/footer.html.twig') %}
 
+		<div class="container">
+			<button id="fixed-button" class="px-4 py-2 transition bg-blue-500 rounded-md shadow fixed-button hover:bg-blue-700">
+				Subscribe To Newsletter?
+			</button>
+		</div>
+
+		<!-- Modal Overlay -->
+		<div id="modal" class="fixed inset-0 z-50 items-center justify-center hidden bg-black bg-opacity-50">
+			<div class="relative p-6 bg-white rounded-lg w-80">
+				<button id="close-modal" class="absolute text-gray-500 top-2 right-2 hover:text-gray-700">&times;</button>
+				<h2 class="mb-4 text-lg font-semibold">Subscribe</h2>
+				<form action="{{ path('app_subscribe_addEmail') }}">
+					<label for="email" class="block text-sm font-medium text-gray-700">Enter your email:</label>
+					<input type="email" id="email" name="email" required class="block w-full p-2 mt-1 border border-gray-300 rounded-md" placeholder="example@example.com">
+					<button type="submit" class="w-full px-4 py-2 mt-4 text-white transition bg-blue-500 rounded-md hover:bg-blue-700">Subscribe</button>
+				</form>
+			</div>
+		</div>
+
+
 	</body>
+	<script>
+		// JavaScript to handle modal opening and closing
+const subscribeButton = document.getElementById('fixed-button');
+const modal = document.getElementById('modal');
+const closeModal = document.getElementById('close-modal');
+
+subscribeButton.addEventListener('click', function () {
+modal.classList.remove('hidden'); // Show the modal
+});
+
+closeModal.addEventListener('click', function () {
+modal.classList.add('hidden'); // Hide the modal
+});
+
+// Close the modal when clicking outside of it
+// window.addEventListener('click', function (event) {
+// if (event.target === modal) {
+// modal.classList.add('hidden');
+// }
+// });
+	</script>
 </html>

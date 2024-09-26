@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Subscriber;
 use App\Repository\ArticleRepository;
 use App\Service\EmailNotificationService;
 use App\Service\PaymentService;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,18 +38,22 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/premium', name: 'app_article_premium')]
-    public function goPremium(PaymentService $ps): Response
+    #[Route('/premium/{id}', name: 'app_article_premium')]
+    public function goPremium(PaymentService $ps, string $id): Response
     {
-        return $this->redirect($ps->askCheckout()->url);
+
+        return $this->redirect($ps->askCheckout($id)->url);
     }
 
 
-    #[Route('/payment-success', name: 'app_payment_success', methods: ['GET'])]
-    public function paymentSuccess(Request $request, EmailNotificationService $ens): Response
+    #[Route('/payment-success/{id}', name: 'app_payment_success', methods: ['GET'])]
+    public function paymentSuccess(Request $request, string $id, ArticleRepository $ar): Response
     {
         if ($request->headers->get('referer') === 'https://checkout.stripe.com/') {
-            return $this->render('article/payment-success.html.twig');
+            $article = $ar->findOneBy(['id' => $id]);
+            return $this->render('article/payment-success.html.twig', [
+                'article' => $article
+            ]);
         } else {
             return $this->redirectToRoute('app_home');
         }
@@ -60,6 +66,27 @@ class ArticleController extends AbstractController
             return $this->render('article/payment-cancel.html.twig');
         } else {
             return $this->redirectToRoute('app_home');
+        }
+    }
+
+    #[Route('/subscribe', name: 'app_subscribe')]
+    public function subscribe(): Response
+    {
+        return $this->render('article/subscribe.html.twig');
+    }
+
+    #[Route('/subscribe/addEmail', name: 'app_subscribe_addEmail')]
+    public function addEmail(Request $request, EntityManagerInterface $em, EmailNotificationService $ens): Response
+    {
+        $subscriber = new Subscriber();
+        $emailUser = $request->get('email');
+        if ($emailUser) {
+            $subscriber->setEmail($emailUser);
+            $em->persist($subscriber);
+            $em->flush();
+
+            $ens->sendEmail($emailUser);
+            return $this->render('article/subscriptionNotification.html.twig');
         }
     }
 }

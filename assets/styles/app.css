@@ -19,3 +19,35 @@ a header ul li :hover {
   color: yellow;
   transition: color 0.5s;
 } /*# sourceMappingURL=style.css.map */
+.container {
+  position: relative;
+}
+.fixed-button {
+  position: fixed; /* Keeps the button fixed on the screen */
+  bottom: 80%; /* Distance from the bottom */
+  right: 20px; /* Distance from the right */
+  background-color: transparent; /* Transparent background */
+  border: 2px solid #007bff; /* Border color */
+  padding: 10px 20px; /* Padding for the button */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 16px; /* Font size */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+  z-index: 1; /* Ensure the button is above pseudo-element */
+}
+
+.fixed-button:after {
+  content: "";
+  position: absolute;
+  bottom: -15px; /* Move down for the tail */
+  left: 50%; /* Center the tail */
+  transform: translateX(-50%); /* Adjust to center */
+  border-width: 10px; /* Size of the triangle */
+  border-style: solid;
+  border-color: #007bff transparent transparent transparent; /* Triangle color */
+}
+
+.fixed-button:hover {
+  background-color: rgba(0, 123, 255, 0.1); /* Light background on hover */
+  color: #007bff; /* Text color on hover */
+}
