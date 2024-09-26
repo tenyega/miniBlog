@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{'ALL ARTICLES'| trans}}
+{% endblock %}
+
+{% block body %}
+	{{include('components/partials/articleCard.html.twig', articles ) }}
+
+{% endblock %}
