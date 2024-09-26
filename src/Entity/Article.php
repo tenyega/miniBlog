@@ -37,6 +37,9 @@ class Article
     #[ORM\Column]
     private ?\DateTimeImmutable $publication_date = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $newsletterEmail = null;
+
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
     {
@@ -135,6 +138,18 @@ class Article
     public function setPublicationDate(\DateTimeImmutable $publication_date): static
     {
         $this->publication_date = $publication_date;
+
+        return $this;
+    }
+
+    public function getNewsletterEmail(): ?string
+    {
+        return $this->newsletterEmail;
+    }
+
+    public function setNewsletterEmail(?string $newsletterEmail): static
+    {
+        $this->newsletterEmail = $newsletterEmail;
 
         return $this;
     }

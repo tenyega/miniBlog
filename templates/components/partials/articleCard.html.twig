@@ -29,7 +29,7 @@
 
 			<div class="flex justify-end mt-4">
 				{% if article.isPremium %}
-					<a href="#" class="text-blue-500 bg-gray-400 border-2 rounded-md hover:underline border-voilet-950">Go Premium</a>
+					<a href="{{path('app_article_premium')}}" class="text-blue-500 bg-gray-400 border-2 rounded-md hover:underline border-voilet-950">Go Premium</a>
 				{% else %}
 					<a href="{{ path('app_article_show', {'id': article.id}) }}" class="text-blue-500 hover:underline">Read more</a>
 				{% endif %}

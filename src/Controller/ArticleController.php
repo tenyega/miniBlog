@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Repository\ArticleRepository;
+use App\Service\EmailNotificationService;
+use App\Service\PaymentService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,5 +34,32 @@ class ArticleController extends AbstractController
         return $this->render('article/show.html.twig', [
             'article' => $article,
         ]);
+    }
+
+    #[Route('/premium', name: 'app_article_premium')]
+    public function goPremium(PaymentService $ps): Response
+    {
+        return $this->redirect($ps->askCheckout()->url);
+    }
+
+
+    #[Route('/payment-success', name: 'app_payment_success', methods: ['GET'])]
+    public function paymentSuccess(Request $request, EmailNotificationService $ens): Response
+    {
+        if ($request->headers->get('referer') === 'https://checkout.stripe.com/') {
+            return $this->render('article/payment-success.html.twig');
+        } else {
+            return $this->redirectToRoute('app_home');
+        }
+    }
+
+    #[Route('/payment-cancel', name: 'app_payment_cancel')]
+    public function paymentCancel(Request $request): Response
+    {
+        if ($request->headers->get('referer') === 'https://checkout.stripe.com/') {
+            return $this->render('article/payment-cancel.html.twig');
+        } else {
+            return $this->redirectToRoute('app_home');
+        }
     }
 }
