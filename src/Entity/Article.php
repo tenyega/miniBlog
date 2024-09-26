@@ -7,6 +7,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+
 class Article
 {
     #[ORM\Id]
@@ -31,6 +33,22 @@ class Article
 
     #[ORM\Column]
     private ?bool $isPremium = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $publication_date = null;
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->setUpdatedAtValue();
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->updated_at = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +123,18 @@ class Article
     public function setPremium(bool $isPremium): static
     {
         $this->isPremium = $isPremium;
+
+        return $this;
+    }
+
+    public function getPublicationDate(): ?\DateTimeImmutable
+    {
+        return $this->publication_date;
+    }
+
+    public function setPublicationDate(\DateTimeImmutable $publication_date): static
+    {
+        $this->publication_date = $publication_date;
 
         return $this;
     }
