@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+header {
+  background: red;
+  color: white;
+}
+header ul {
+  list-style: none;
+}
+header ul li {
+  display: inline-block;
+}
+header ul li a {
+  color: white;
+  text-decoration: none;
+}
+a header ul li :hover {
+  color: yellow;
+  transition: color 0.5s;
+} /*# sourceMappingURL=style.css.map */

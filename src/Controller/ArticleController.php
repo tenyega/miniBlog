@@ -25,11 +25,11 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/article/{id}', name: 'app_one_article')]
-    public function article(ArticleRepository $ar, PaginatorInterface $paginator, Request $request, int $id): Response
+    #[Route('/article/{id}', name: 'app_article_show')]
+    public function show(ArticleRepository $ar, PaginatorInterface $paginator, Request $request, int $id): Response
     {
         $article = $ar->findOneBy(['id' => $id]);
-        return $this->render('article/article.html.twig', [
+        return $this->render('article/show.html.twig', [
             'article' => $article,
         ]);
     }
