@@ -23,11 +23,10 @@
 		{% endblock %}
 	</head>
 	<body>
-		{{ home }}
-		{# {{include('components/navbar.html.twig') }} #}
+		{{include('components/partials/navbar.html.twig') }}
 
 		{% block body %}{% endblock %}
-		{# {% include('components/footer.html.twig') %} #}
+		{% include('components/footer.html.twig') %}
 
 	</body>
 </html>
