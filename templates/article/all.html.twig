@@ -35,7 +35,11 @@
 				</div>
 
 				<div class="flex justify-end mt-4">
-					<a href="#" class="text-blue-500 hover:underline">Read more</a>
+					{% if article.isPremium %}
+						<a href="#" class="text-blue-500 bg-gray-400 border-2 rounded-md hover:underline border-voilet-950">Go Premium</a>
+					{% else %}
+						<a href="{{ path('app_one_article', {'id': article.id}) }}" class="text-blue-500 hover:underline">Read more</a>
+					{% endif %}
 				</div>
 			</div>
 		{% endfor %}

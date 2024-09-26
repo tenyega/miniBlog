@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ArticleController extends AbstractController
 {
-    #[Route('/article', name: 'app_article')]
+    #[Route('/article', name: 'app_article_all')]
     public function all(ArticleRepository $ar, PaginatorInterface $paginator, Request $request): Response
     {
         $articles = $ar->findAll();
@@ -22,6 +22,15 @@ class ArticleController extends AbstractController
         );
         return $this->render('article/all.html.twig', [
             'pagination' => $pagination,
+        ]);
+    }
+
+    #[Route('/article/{id}', name: 'app_one_article')]
+    public function article(ArticleRepository $ar, PaginatorInterface $paginator, Request $request, int $id): Response
+    {
+        $article = $ar->findOneBy(['id' => $id]);
+        return $this->render('article/article.html.twig', [
+            'article' => $article,
         ]);
     }
 }

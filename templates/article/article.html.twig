@@ -1,6 +1,13 @@
-<div class="grid grid-cols-1 gap-4 w-90 md:grid-cols-2">
+{% extends 'base.html.twig' %}
 
-	{% for article  in articles %}
+{% block title %}
+	{{'Article Details'| trans}}
+{% endblock %}
+
+{% block body %}
+	<div
+		class="grid grid-cols-1 gap-4 w-90 md:grid-cols-2">
+
 		<!-- Title -->
 		<div class="relative flex flex-col p-4 mb-4 border rounded-md shadow-lg md:p-6">
 
@@ -26,15 +33,12 @@
 					{{ article.publicationDate|date('F j, Y') }}
 				</span>
 			</div>
+			<p>
+				{{ article.content }}
+			</p>
 
-			<div class="flex justify-end mt-4">
-				{% if article.isPremium %}
-					<a href="#" class="text-blue-500 bg-gray-400 border-2 rounded-md hover:underline border-voilet-950">Go Premium</a>
-				{% else %}
-					<a href="{{ path('app_one_article', {'id': article.id}) }}" class="text-blue-500 hover:underline">Read more</a>
-				{% endif %}
-			</div>
 		</div>
-	{% endfor %}
 
-</div>
+	</div>
+
+{% endblock %}
